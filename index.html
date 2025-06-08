@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-    <title>PAXLIST - Отформатированная версия</title>
+    <title>PAXLIST - Список пассажиров</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,7 +18,35 @@
         h1 {
             color: #333;
             text-align: center;
+            margin-bottom: 10px;
+        }
+        .update-time {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
             margin-bottom: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #searchInput {
+            width: 50%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        #searchInput:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+        .search-info {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
         }
         table {
             border-collapse: collapse;
@@ -37,21 +65,51 @@
             color: white;
             font-weight: bold;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
-        .info {
-            margin-bottom: 15px;
+        tr {
+            transition: background-color 0.2s;
+        }
+        tbody tr:hover {
+            background-color: #f0f8ff;
+        }
+        .hidden {
+            display: none;
+        }
+        .highlight {
+            background-color: #ffeb3b !important;
+        }
+        .no-results {
+            text-align: center;
+            padding: 20px;
             color: #666;
             font-style: italic;
+        }
+        .stats {
+            margin-top: 10px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>PAXLIST</h1>
-        <div class="info">
-            Создано из Excel файла с сохранением структуры и частичного форматирования
+        <div class="update-time">Время обновления: 08.06.2025 21:46</div>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Поиск по любому полю..." autofocus>
+            <div class="search-info">Начните вводить для фильтрации данных</div>
         </div>
-<table>
+        
+        <div class="stats" id="stats">
+            Всего записей: <span id="totalCount">0</span> | 
+            Показано: <span id="visibleCount">0</span>
+        </div>
+<table id="dataTable">
 <thead>
 <tr>
 <th>TourDate</th>
@@ -59,10 +117,6 @@
 <th>Region</th>
 <th>PAX</th>
 <th>Status</th>
-<th>ProcessedAt</th>
-<th>Unnamed: 6</th>
-<th>Легенда статусов:</th>
-<th>Unnamed: 8</th>
 </tr>
 </thead>
 <tbody>
@@ -72,10 +126,6 @@
 <td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
 <td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">13</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #E6E6FA; font-weight: bold; font-style: italic; font-size: 14.0px">08.06.2025 21:03:20</td>
-<td></td>
-<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 12.0px">Низкий спрос ⓘ</td>
-<td style="font-style: italic; font-size: 11.0px">Меньше 4 человек</td>
 </tr>
 <tr>
 <td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">09.06.2025</td>
@@ -83,10 +133,6 @@
 <td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">Fujairah</td>
 <td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">19</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td style="background-color: #99CCFF; font-weight: bold; font-style: italic; font-size: 12.0px">Минимум ➤</td>
-<td style="font-style: italic; font-size: 11.0px">4 человека (минимум для запуска)</td>
 </tr>
 <tr>
 <td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">09.06.2025</td>
@@ -94,10 +140,6 @@
 <td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
 <td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">17</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 12.0px">Оптимально ✅</td>
-<td style="font-style: italic; font-size: 11.0px">5–9 человек (оптимальное количество)</td>
 </tr>
 <tr>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">09.06.2025</td>
@@ -105,10 +147,6 @@
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">11</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 12.0px">Отлично ✅✅</td>
-<td style="font-style: italic; font-size: 11.0px">10+ человек (превосходный результат)</td>
 </tr>
 <tr>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">09.06.2025</td>
@@ -116,10 +154,6 @@
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Fujairah</td>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">23</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">09.06.2025</td>
@@ -127,10 +161,6 @@
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">14</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
@@ -138,10 +168,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">29</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
@@ -149,10 +175,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">13</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
@@ -160,10 +182,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Fujairah</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">7</td>
 <td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
@@ -171,10 +189,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">14</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
@@ -182,10 +196,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Umm Al Quwain</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">2</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">11.06.2025</td>
@@ -193,10 +203,6 @@
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">4</td>
 <td style="background-color: #99CCFF; font-weight: bold; font-style: italic; font-size: 14.0px">Минимум ➤</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">11.06.2025</td>
@@ -204,10 +210,6 @@
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Fujairah</td>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">3</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">11.06.2025</td>
@@ -215,10 +217,6 @@
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">2</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">11.06.2025</td>
@@ -226,10 +224,6 @@
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">9</td>
 <td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">12.06.2025</td>
@@ -237,10 +231,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">5</td>
 <td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">12.06.2025</td>
@@ -248,10 +238,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Fujairah</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">12.06.2025</td>
@@ -259,10 +245,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">3</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">12.06.2025</td>
@@ -270,10 +252,6 @@
 <td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
 <td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">3</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">12.06.2025</td>
@@ -281,10 +259,6 @@
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">16</td>
 <td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">12.06.2025</td>
@@ -292,10 +266,6 @@
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">5</td>
 <td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">12.06.2025</td>
@@ -303,10 +273,6 @@
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Fujairah</td>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">4</td>
 <td style="background-color: #99CCFF; font-weight: bold; font-style: italic; font-size: 14.0px">Минимум ➤</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">12.06.2025</td>
@@ -314,10 +280,6 @@
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
 <td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">2</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">14.06.2025</td>
@@ -325,10 +287,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">2</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">14.06.2025</td>
@@ -336,10 +294,6 @@
 <td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
 <td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">2</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">15.06.2025</td>
@@ -347,10 +301,6 @@
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">4</td>
 <td style="background-color: #99CCFF; font-weight: bold; font-style: italic; font-size: 14.0px">Минимум ➤</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">09.07.2025</td>
@@ -358,10 +308,6 @@
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Fujairah</td>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">1</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">17.07.2025</td>
@@ -369,10 +315,6 @@
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
 <td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">2</td>
 <td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">17.07.2025</td>
@@ -380,25 +322,98 @@
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
 <td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">5</td>
 <td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
-<td style="background-color: #F8F8FF"></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
+        <div id="noResults" class="no-results hidden">
+            Ничего не найдено. Попробуйте изменить поисковый запрос.
+        </div>
     </div>
     <script>
-        // Добавляем интерактивность
+        // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
-            const rows = document.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                row.addEventListener('mouseover', function() {
-                    this.style.backgroundColor = '#f0f8ff';
-                });
-                row.addEventListener('mouseout', function() {
-                    this.style.backgroundColor = '';
-                });
+            const searchInput = document.getElementById('searchInput');
+            const table = document.getElementById('dataTable');
+            const tbody = table.getElementsByTagName('tbody')[0];
+            const rows = tbody.getElementsByTagName('tr');
+            const noResults = document.getElementById('noResults');
+            const totalCount = document.getElementById('totalCount');
+            const visibleCount = document.getElementById('visibleCount');
+            
+            // Устанавливаем общее количество записей
+            totalCount.textContent = rows.length;
+            visibleCount.textContent = rows.length;
+            
+            // Функция поиска
+            function filterTable() {
+                const searchText = searchInput.value.toLowerCase().trim();
+                let visibleRowsCount = 0;
+                
+                // Если строка поиска пустая, показываем все строки
+                if (searchText === '') {
+                    for (let i = 0; i < rows.length; i++) {
+                        rows[i].classList.remove('hidden');
+                        rows[i].classList.remove('highlight');
+                    }
+                    noResults.classList.add('hidden');
+                    visibleCount.textContent = rows.length;
+                    return;
+                }
+                
+                // Фильтруем строки
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i];
+                    const cells = row.getElementsByTagName('td');
+                    let found = false;
+                    
+                    // Проверяем каждую ячейку в строке
+                    for (let j = 0; j < cells.length; j++) {
+                        const cellText = cells[j].textContent.toLowerCase();
+                        if (cellText.includes(searchText)) {
+                            found = true;
+                            // Подсвечиваем найденный текст
+                            const originalText = cells[j].textContent;
+                            const regex = new RegExp(searchText, 'gi');
+                            cells[j].innerHTML = originalText.replace(regex, function(match) {
+                                return '<span class="highlight">' + match + '</span>';
+                            });
+                        } else {
+                            // Убираем подсветку из ячеек, где нет совпадений
+                            cells[j].innerHTML = cells[j].textContent;
+                        }
+                    }
+                    
+                    // Показываем или скрываем строку
+                    if (found) {
+                        row.classList.remove('hidden');
+                        visibleRowsCount++;
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                }
+                
+                // Обновляем счетчик и показываем сообщение, если ничего не найдено
+                visibleCount.textContent = visibleRowsCount;
+                if (visibleRowsCount === 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
+            }
+            
+            // Обработчик ввода с задержкой
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(filterTable, 300);
+            });
+            
+            // Очистка поиска по Escape
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    this.value = '';
+                    filterTable();
+                }
             });
         });
     </script>

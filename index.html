@@ -93,12 +93,56 @@
             color: #666;
             font-size: 14px;
         }
+        .tour-stats {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .tour-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .tour-stat-item {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tour-info {
+            flex: 1;
+        }
+        .tour-date {
+            font-weight: bold;
+            color: #333;
+        }
+        .tour-name {
+            color: #666;
+            font-size: 12px;
+        }
+        .tour-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-left: 10px;
+        }
+        .tour-stats-header {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>PAXLIST</h1>
-        <div class="update-time">Время обновления: 08.06.2025 21:46</div>
+        <div class="update-time">Время обновления: 08.06.2025 21:59</div>
         
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Поиск по любому полю..." autofocus>
@@ -108,6 +152,10 @@
         <div class="stats" id="stats">
             Всего записей: <span id="totalCount">0</span> | 
             Показано: <span id="visibleCount">0</span>
+        </div>
+        
+        <div class="tour-stats" id="tourStats">
+            <!-- Здесь будет статистика по турам -->
         </div>
 <table id="dataTable">
 <thead>
@@ -339,10 +387,114 @@
             const noResults = document.getElementById('noResults');
             const totalCount = document.getElementById('totalCount');
             const visibleCount = document.getElementById('visibleCount');
+            const tourStats = document.getElementById('tourStats');
             
             // Устанавливаем общее количество записей
             totalCount.textContent = rows.length;
             visibleCount.textContent = rows.length;
+            
+            // Функция для подсчета статистики по турам
+            function calculateTourStats() {
+                const tourData = {};
+                const headers = table.getElementsByTagName('th');
+                let dateColIndex = -1;
+                let tourColIndex = -1;
+                let countColIndex = -1;
+                
+                // Находим индексы нужных столбцов
+                for (let i = 0; i < headers.length; i++) {
+                    const headerText = headers[i].textContent.toLowerCase();
+                    if (headerText.includes('дата') || headerText.includes('date')) {
+                        dateColIndex = i;
+                    } else if (headerText.includes('тур') || headerText.includes('tour') || headerText.includes('название')) {
+                        tourColIndex = i;
+                    } else if (headerText.includes('кол') || headerText.includes('количество') || headerText.includes('pax') || headerText.includes('чел')) {
+                        countColIndex = i;
+                    }
+                }
+                
+                // Если не нашли все нужные столбцы, пытаемся угадать по позиции
+                if (dateColIndex === -1) dateColIndex = 0; // Обычно дата в первом столбце
+                if (tourColIndex === -1) tourColIndex = 1; // Тур обычно во втором
+                if (countColIndex === -1) {
+                    // Ищем столбец с числами (количество людей)
+                    for (let i = 2; i < headers.length; i++) {
+                        let isNumeric = true;
+                        for (let j = 0; j < Math.min(5, rows.length); j++) {
+                            const cellValue = rows[j].getElementsByTagName('td')[i]?.textContent.trim();
+                            if (cellValue && isNaN(cellValue)) {
+                                isNumeric = false;
+                                break;
+                            }
+                        }
+                        if (isNumeric) {
+                            countColIndex = i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Собираем данные по турам
+                for (let i = 0; i < rows.length; i++) {
+                    if (rows[i].classList.contains('hidden')) continue;
+                    
+                    const cells = rows[i].getElementsByTagName('td');
+                    const date = cells[dateColIndex]?.textContent.trim() || '';
+                    const tour = cells[tourColIndex]?.textContent.trim() || '';
+                    const count = parseInt(cells[countColIndex]?.textContent.trim()) || 0;
+                    
+                    if (date && tour) {
+                        const key = date + '|||' + tour;
+                        if (!tourData[key]) {
+                            tourData[key] = {
+                                date: date,
+                                tour: tour,
+                                count: 0
+                            };
+                        }
+                        tourData[key].count += count;
+                    }
+                }
+                
+                // Отображаем статистику
+                displayTourStats(tourData);
+            }
+            
+            // Функция отображения статистики
+            function displayTourStats(tourData) {
+                const tourArray = Object.values(tourData);
+                
+                if (tourArray.length === 0) {
+                    tourStats.innerHTML = '';
+                    return;
+                }
+                
+                // Сортируем по дате и туру
+                tourArray.sort((a, b) => {
+                    if (a.date !== b.date) {
+                        return a.date.localeCompare(b.date);
+                    }
+                    return a.tour.localeCompare(b.tour);
+                });
+                
+                let html = '<div class="tour-stats-header">Количество человек по турам:</div>';
+                html += '<div class="tour-stats-grid">';
+                
+                tourArray.forEach(item => {
+                    html += `
+                        <div class="tour-stat-item">
+                            <div class="tour-info">
+                                <div class="tour-date">${item.date}</div>
+                                <div class="tour-name">${item.tour}</div>
+                            </div>
+                            <div class="tour-count">${item.count}</div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                tourStats.innerHTML = html;
+            }
             
             // Функция поиска
             function filterTable() {
@@ -357,6 +509,7 @@
                     }
                     noResults.classList.add('hidden');
                     visibleCount.textContent = rows.length;
+                    calculateTourStats(); // Пересчитываем статистику
                     return;
                 }
                 
@@ -399,7 +552,13 @@
                 } else {
                     noResults.classList.add('hidden');
                 }
+                
+                // Пересчитываем статистику для видимых строк
+                calculateTourStats();
             }
+            
+            // Вычисляем начальную статистику
+            calculateTourStats();
             
             // Обработчик ввода с задержкой
             let searchTimeout;

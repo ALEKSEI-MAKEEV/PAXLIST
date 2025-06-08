@@ -2,1244 +2,404 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>PAXLIST - Современная версия</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>PAXLIST - Отформатированная версия</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 10px;
-            line-height: 1.6;
-            -webkit-text-size-adjust: 100%;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
         }
-
-        .main-container {
-            max-width: 100%;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-            color: white;
+        .container {
+            background-color: white;
             padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.3;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            background: linear-gradient(45deg, #fff, #e2e8f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header .update-time {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            font-weight: 300;
-            color: #cbd5e1;
-        }
-
-        .controls {
-            padding: 15px;
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .search-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .search-container {
-            position: relative;
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 10px 15px 10px 40px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: white;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border: none;
             border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #475569;
-        }
-
-        .btn-secondary:hover {
-            background: #cbd5e1;
-        }
-
-        .stats {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
+        h1 {
+            color: #333;
             text-align: center;
-            padding: 8px 12px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            min-width: 80px;
+            margin-bottom: 20px;
         }
-
-        .stat-number {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #2d3748;
-        }
-
-        .stat-label {
-            font-size: 0.7rem;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .filters-container {
-            background: white;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .filters-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            min-width: 120px;
-        }
-
-        .filter-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #475569;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .filter-select {
-            padding: 8px 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 14px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 8px center;
-            background-repeat: no-repeat;
-            background-size: 16px;
-            padding-right: 32px;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-        }
-
-        .clear-filters {
-            padding: 6px 12px;
-            background: #fee2e2;
-            color: #991b1b;
-            border: none;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .clear-filters:hover {
-            background: #fecaca;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            margin: 0;
-            background: white;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        .modern-table {
+        table {
+            border-collapse: collapse;
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
+            font-family: Arial, sans-serif;
             font-size: 12px;
         }
-
-        .modern-table thead {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .modern-table th {
-            padding: 12px 8px;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
             text-align: left;
-            font-weight: 600;
+            vertical-align: top;
+        }
+        th {
+            background-color: #4CAF50;
             color: white;
-            border: none;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            position: relative;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .modern-table th:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .modern-table tbody tr {
-            transition: all 0.2s ease;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .modern-table tbody tr:hover {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            transform: scale(1.001);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .modern-table td {
-            padding: 10px 8px;
-            border: none;
-            vertical-align: middle;
-            position: relative;
-            word-wrap: break-word;
-            max-width: 150px;
-        }
-
-        .modern-table tbody tr:nth-child(even) {
-            background: #fafbfc;
-        }
-
-        .modern-table tbody tr:nth-child(even):hover {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        }
-
-        .cell-content {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: none;
-            letter-spacing: 0.3px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            white-space: nowrap;
-            border: 2px solid transparent;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .status-badge::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.4s ease;
-        }
-
-        .status-badge:hover::before {
-            left: 100%;
-        }
-
-        .status-completed, .status-success, .status-active, .status-confirmed {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            border-color: #16a34a;
-            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
-        }
-
-        .status-completed:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-        }
-
-        .status-pending, .status-waiting, .status-processing {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            border-color: #d97706;
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
-        }
-
-        .status-pending:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-        }
-
-        .status-cancelled, .status-failed, .status-error, .status-rejected {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            border-color: #dc2626;
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-        }
-
-        .status-cancelled:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-        }
-
-        .status-new, .status-draft {
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            color: white;
-            border-color: #4f46e5;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-        }
-
-        .status-new:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-        }
-
-        .status-info {
-            background: linear-gradient(135deg, #06b6d4, #0891b2);
-            color: white;
-            border-color: #0891b2;
-            box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
-        }
-
-        .status-info:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
-        }
-
-        .status-default {
-            background: linear-gradient(135deg, #64748b, #475569);
-            color: white;
-            border-color: #475569;
-            box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);
-        }
-
-        .status-default:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.4);
-        }
-
-        .loading {
-            display: none;
+            font-weight: bold;
             text-align: center;
-            padding: 40px;
-            color: #64748b;
         }
-
-        .loading i {
-            font-size: 2rem;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .no-results {
-            display: none;
-            text-align: center;
-            padding: 40px;
-            color: #64748b;
-        }
-
-        .no-results i {
-            font-size: 2rem;
+        .info {
             margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        .footer {
-            padding: 15px;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-            text-align: center;
-            color: #64748b;
-            font-size: 12px;
-        }
-
-        /* Мобильная адаптивность */
-        @media (max-width: 768px) {
-            body {
-                padding: 5px;
-            }
-
-            .main-container {
-                border-radius: 10px;
-            }
-
-            .header {
-                padding: 15px;
-            }
-
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .controls {
-                padding: 10px;
-            }
-
-            .search-input {
-                font-size: 16px;
-                padding: 12px 15px 12px 40px;
-            }
-
-            .filter-select {
-                font-size: 14px;
-                padding: 10px 32px 10px 12px;
-                min-height: 44px;
-            }
-
-            .clear-filters {
-                padding: 10px 16px;
-                font-size: 14px;
-                min-height: 44px;
-            }
-
-            .filters-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .filter-group {
-                min-width: auto;
-            }
-
-            .stats {
-                justify-content: center;
-            }
-
-            .modern-table {
-                font-size: 11px;
-            }
-
-            .modern-table th,
-            .modern-table td {
-                padding: 8px 6px;
-                word-wrap: break-word;
-                max-width: none;
-            }
-
-            .status-badge {
-                font-size: 10px;
-                padding: 3px 8px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .modern-table {
-                font-size: 10px;
-            }
-
-            .modern-table th,
-            .modern-table td {
-                padding: 6px 4px;
-            }
-
-            .header h1 {
-                font-size: 1.3rem;
-            }
-
-            .stat-item {
-                min-width: 70px;
-                padding: 6px 8px;
-            }
-
-            .stat-number {
-                font-size: 1rem;
-            }
-        }
-
-        /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modern-table tbody tr {
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        /* Скроллбар */
-        .table-container::-webkit-scrollbar {
-            height: 6px;
-            width: 6px;
-        }
-
-        .table-container::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        .table-container::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-
-        .table-container::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        /* Сортировка иконки */
-        .sort-icon {
-            margin-left: 4px;
-            opacity: 0.5;
-            transition: opacity 0.2s ease;
-        }
-
-        .sort-icon.active {
-            opacity: 1;
+            color: #666;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <div class="main-container">
-        <div class="header">
-            <div class="header-content">
-                <h1><i class="fas fa-users"></i> PAXLIST</h1>
-                <p class="update-time">Обновлено: 08.06.2025 17:44:19</p>
-            </div>
+    <div class="container">
+        <h1>PAXLIST</h1>
+        <div class="info">
+            Создано из Excel файла с сохранением структуры и частичного форматирования
         </div>
-
-        <div class="controls">
-            <div class="search-row">
-                <div class="search-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="search-input" id="searchInput" placeholder="Поиск по всем полям...">
-                </div>
-
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-number" id="totalRows">0</div>
-                        <div class="stat-label">Всего</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" id="filteredRows">0</div>
-                        <div class="stat-label">Показано</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filters-container">
-                <div class="filters-row" id="filtersRow">
-                    <button class="clear-filters" onclick="clearAllFilters()">
-                        <i class="fas fa-times"></i> Очистить фильтры
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <div class="loading" id="loading">
-                <i class="fas fa-spinner"></i>
-                <p>Загрузка данных...</p>
-            </div>
-            
-            <div class="no-results" id="noResults">
-                <i class="fas fa-search"></i>
-                <h3>Ничего не найдено</h3>
-                <p>Попробуйте изменить условия поиска</p>
-            </div>
-
-            <table class="modern-table" id="dataTable">
-                <thead>
-                    <tr>
-                        <th onclick="sortTable('TourDate')" title="Кликните для сортировки">
-                            TourDate
-                            <i class="fas fa-sort sort-icon" id="sort-0"></i>
-                        </th>
-                        <th onclick="sortTable('Tour')" title="Кликните для сортировки">
-                            Tour
-                            <i class="fas fa-sort sort-icon" id="sort-1"></i>
-                        </th>
-                        <th onclick="sortTable('Region')" title="Кликните для сортировки">
-                            Region
-                            <i class="fas fa-sort sort-icon" id="sort-2"></i>
-                        </th>
-                        <th onclick="sortTable('PAX')" title="Кликните для сортировки">
-                            PAX
-                            <i class="fas fa-sort sort-icon" id="sort-3"></i>
-                        </th>
-                        <th onclick="sortTable('Status')" title="Кликните для сортировки">
-                            Status
-                            <i class="fas fa-sort sort-icon" id="sort-4"></i>
-                        </th>
-                        <th onclick="sortTable('Unnamed: 6')" title="Кликните для сортировки">
-                            Unnamed: 6
-                            <i class="fas fa-sort sort-icon" id="sort-5"></i>
-                        </th>
-                        <th onclick="sortTable('Легенда статусов:')" title="Кликните для сортировки">
-                            Легенда статусов:
-                            <i class="fas fa-sort sort-icon" id="sort-6"></i>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>09.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="Tour">MODERN DUBAI TOUR</td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="Region">Ajman/Sharjah</td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>13</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #E6E6FA, #E6E6FAdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:">Низкий спрос ⓘ</td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>09.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="Tour">MODERN DUBAI TOUR</td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="Region">Fujairah</td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>19</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:">Минимум ➤</td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>09.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="Tour">MODERN DUBAI TOUR</td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="Region">Ras Al Khaimah</td>
-                        <td style="background: linear-gradient(135deg, #C3C7EC, #C3C7ECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>17</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:">Оптимально ✅</td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>09.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Tour">YAS EXPERIENCE TOUR</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Region">Ajman/Sharjah</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>11</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:">Отлично ✅✅</td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>09.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Tour">YAS EXPERIENCE TOUR</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Region">Fujairah</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>23</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>09.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Tour">YAS EXPERIENCE TOUR</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Region">Ras Al Khaimah</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>14</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>10.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Ajman/Sharjah</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>29</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>10.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Dubai/Jumeira</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>16</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>10.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Fujairah</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>7</span></td>
-                        <td style="background: linear-gradient(135deg, #CCFFCC, #CCFFCCdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Оптимально ✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>10.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Ras Al Khaimah</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>14</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>10.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Umm Al Quwain</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>2</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>11.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Tour">EXPLORE ABU DHABI</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Region">Dubai/Jumeira</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>4</span></td>
-                        <td style="background: linear-gradient(135deg, #99CCFF, #99CCFFdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Минимум ➤</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>11.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Tour">EXPLORE ABU DHABI</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Region">Fujairah</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>3</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>11.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Tour">EXPLORE ABU DHABI</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Region">Ras Al Khaimah</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>2</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>11.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Tour">EXPLORE ABU DHABI</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Region">Ajman/Sharjah</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>9</span></td>
-                        <td style="background: linear-gradient(135deg, #CCFFCC, #CCFFCCdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Оптимально ✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>12.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Ajman/Sharjah</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>5</span></td>
-                        <td style="background: linear-gradient(135deg, #CCFFCC, #CCFFCCdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Оптимально ✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>12.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Fujairah</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>10</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>12.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Ras Al Khaimah</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>3</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #EAE4E6, #EAE4E6dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>12.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #EAE4E6, #EAE4E6dd); font-style: italic; font-size: 16.0px" data-column="Tour">LA PERLE WITH TRANSFER</td>
-                        <td style="background: linear-gradient(135deg, #EAE4E6, #EAE4E6dd); font-style: italic; font-size: 16.0px" data-column="Region">Dubai/Jumeira</td>
-                        <td style="background: linear-gradient(135deg, #EAE4E6, #EAE4E6dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>3</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>12.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Tour">YAS EXPERIENCE TOUR</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Region">Ajman/Sharjah</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>16</span></td>
-                        <td style="background: linear-gradient(135deg, #00FF00, #00FF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Отлично ✅✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>12.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Tour">YAS EXPERIENCE TOUR</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Region">Dubai/Jumeira</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>5</span></td>
-                        <td style="background: linear-gradient(135deg, #CCFFCC, #CCFFCCdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Оптимально ✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>12.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Tour">YAS EXPERIENCE TOUR</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Region">Fujairah</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>4</span></td>
-                        <td style="background: linear-gradient(135deg, #99CCFF, #99CCFFdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Минимум ➤</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>12.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Tour">YAS EXPERIENCE TOUR</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="Region">Ras Al Khaimah</td>
-                        <td style="background: linear-gradient(135deg, #D8E4FA, #D8E4FAdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>2</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>14.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Dubai/Jumeira</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>2</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #EAE4E6, #EAE4E6dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>14.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #EAE4E6, #EAE4E6dd); font-style: italic; font-size: 16.0px" data-column="Tour">LA PERLE WITH TRANSFER</td>
-                        <td style="background: linear-gradient(135deg, #EAE4E6, #EAE4E6dd); font-style: italic; font-size: 16.0px" data-column="Region">Dubai/Jumeira</td>
-                        <td style="background: linear-gradient(135deg, #EAE4E6, #EAE4E6dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>2</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>15.06.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Tour">EXPLORE ABU DHABI</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Region">Ajman/Sharjah</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>4</span></td>
-                        <td style="background: linear-gradient(135deg, #99CCFF, #99CCFFdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Минимум ➤</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>09.07.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Tour">EXPLORE ABU DHABI</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Region">Fujairah</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>1</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>17.07.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Tour">BEAUTY OF DUBAI CITY</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="Region">Dubai/Jumeira</td>
-                        <td style="background: linear-gradient(135deg, #CDD5E0, #CDD5E0dd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>2</span></td>
-                        <td style="background: linear-gradient(135deg, #FFFF00, #FFFF00dd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Низкий спрос ⓘ</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                    <tr>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="TourDate"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>17.07.2025</span></td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Tour">EXPLORE ABU DHABI</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="Region">Ras Al Khaimah</td>
-                        <td style="background: linear-gradient(135deg, #F4ECEC, #F4ECECdd); font-style: italic; font-size: 16.0px" data-column="PAX"><span class="cell-content"><i class="fas fa-hashtag" style="opacity: 0.3;"></i>5</span></td>
-                        <td style="background: linear-gradient(135deg, #CCFFCC, #CCFFCCdd); font-weight: 700; font-style: italic; font-size: 14.0px" data-column="Status"><span class="status-badge status-default">Оптимально ✅</span></td>
-                        <td style="background: linear-gradient(135deg, #F8F8FF, #F8F8FFdd)" data-column="Unnamed: 6"></td>
-                        <td data-column="Легенда статусов:"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="footer">
-            <p><i class="fas fa-info-circle"></i> Создано из Excel файла</p>
-        </div>
+<table>
+<thead>
+<tr>
+<th>TourDate</th>
+<th>Tour</th>
+<th>Region</th>
+<th>PAX</th>
+<th>Status</th>
+<th>ProcessedAt</th>
+<th>Unnamed: 6</th>
+<th>Легенда статусов:</th>
+<th>Unnamed: 8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">09.06.2025</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">MODERN DUBAI TOUR</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">13</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #E6E6FA; font-weight: bold; font-style: italic; font-size: 14.0px">08.06.2025 17:53:17</td>
+<td></td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 12.0px">Низкий спрос ⓘ</td>
+<td style="font-style: italic; font-size: 11.0px">Меньше 4 человек</td>
+</tr>
+<tr>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">09.06.2025</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">MODERN DUBAI TOUR</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">Fujairah</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">19</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td style="background-color: #99CCFF; font-weight: bold; font-style: italic; font-size: 12.0px">Минимум ➤</td>
+<td style="font-style: italic; font-size: 11.0px">4 человека (минимум для запуска)</td>
+</tr>
+<tr>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">09.06.2025</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">MODERN DUBAI TOUR</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
+<td style="background-color: #C3C7EC; font-style: italic; font-size: 16.0px">17</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 12.0px">Оптимально ✅</td>
+<td style="font-style: italic; font-size: 11.0px">5–9 человек (оптимальное количество)</td>
+</tr>
+<tr>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">09.06.2025</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">YAS EXPERIENCE TOUR</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">11</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 12.0px">Отлично ✅✅</td>
+<td style="font-style: italic; font-size: 11.0px">10+ человек (превосходный результат)</td>
+</tr>
+<tr>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">09.06.2025</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">YAS EXPERIENCE TOUR</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Fujairah</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">23</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">09.06.2025</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">YAS EXPERIENCE TOUR</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">14</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">29</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">16</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Fujairah</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">7</td>
+<td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">14</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Umm Al Quwain</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">2</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">11.06.2025</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">EXPLORE ABU DHABI</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">4</td>
+<td style="background-color: #99CCFF; font-weight: bold; font-style: italic; font-size: 14.0px">Минимум ➤</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">11.06.2025</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">EXPLORE ABU DHABI</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Fujairah</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">3</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">11.06.2025</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">EXPLORE ABU DHABI</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">2</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">11.06.2025</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">EXPLORE ABU DHABI</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">9</td>
+<td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">12.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">5</td>
+<td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">12.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Fujairah</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">10</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">12.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">3</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">12.06.2025</td>
+<td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">LA PERLE WITH TRANSFER</td>
+<td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
+<td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">3</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">12.06.2025</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">YAS EXPERIENCE TOUR</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">16</td>
+<td style="background-color: #00FF00; font-weight: bold; font-style: italic; font-size: 14.0px">Отлично ✅✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">12.06.2025</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">YAS EXPERIENCE TOUR</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">5</td>
+<td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">12.06.2025</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">YAS EXPERIENCE TOUR</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Fujairah</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">4</td>
+<td style="background-color: #99CCFF; font-weight: bold; font-style: italic; font-size: 14.0px">Минимум ➤</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">12.06.2025</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">YAS EXPERIENCE TOUR</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
+<td style="background-color: #D8E4FA; font-style: italic; font-size: 16.0px">2</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">14.06.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">2</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">14.06.2025</td>
+<td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">LA PERLE WITH TRANSFER</td>
+<td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
+<td style="background-color: #EAE4E6; font-style: italic; font-size: 16.0px">2</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">15.06.2025</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">EXPLORE ABU DHABI</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Ajman/Sharjah</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">4</td>
+<td style="background-color: #99CCFF; font-weight: bold; font-style: italic; font-size: 14.0px">Минимум ➤</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">09.07.2025</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">EXPLORE ABU DHABI</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Fujairah</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">1</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">17.07.2025</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">BEAUTY OF DUBAI CITY</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">Dubai/Jumeira</td>
+<td style="background-color: #CDD5E0; font-style: italic; font-size: 16.0px">2</td>
+<td style="background-color: #FFFF00; font-weight: bold; font-style: italic; font-size: 14.0px">Низкий спрос ⓘ</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">17.07.2025</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">EXPLORE ABU DHABI</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">Ras Al Khaimah</td>
+<td style="background-color: #F4ECEC; font-style: italic; font-size: 16.0px">5</td>
+<td style="background-color: #CCFFCC; font-weight: bold; font-style: italic; font-size: 14.0px">Оптимально ✅</td>
+<td style="background-color: #F8F8FF"></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
     </div>
-
     <script>
-        // Глобальные переменные
-        let originalData = [];
-        let currentData = [];
-        let sortDirection = {};
-        let activeFilters = {};
-        const filterData = {'TourDate': ['09.06.2025', '09.07.2025', '10.06.2025', '11.06.2025', '12.06.2025', '14.06.2025', '15.06.2025', '17.07.2025'], 'Tour': ['BEAUTY OF DUBAI CITY', 'EXPLORE ABU DHABI', 'LA PERLE WITH TRANSFER', 'MODERN DUBAI TOUR', 'YAS EXPERIENCE TOUR'], 'Region': ['Ajman/Sharjah', 'Dubai/Jumeira', 'Fujairah', 'Ras Al Khaimah', 'Umm Al Quwain'], 'PAX': ['1', '10', '11', '13', '14', '16', '17', '19', '2', '23', '29', '3', '4', '5', '7', '9'], 'Status': ['Минимум ➤', 'Низкий спрос ⓘ', 'Оптимально ✅', 'Отлично ✅✅'], 'Unnamed: 6': [], 'Легенда статусов:': ['Минимум ➤', 'Низкий спрос ⓘ', 'Оптимально ✅', 'Отлично ✅✅']};
-
-        // Инициализация
+        // Добавляем интерактивность
         document.addEventListener('DOMContentLoaded', function() {
-            initializeTable();
-            setupSearch();
-            setupFilters();
-            updateStats();
-            handleMobileView();
-        });
-
-        function initializeTable() {
-            const rows = document.querySelectorAll('#tableBody tr');
-            originalData = Array.from(rows).map(row => {
-                return {
-                    element: row,
-                    data: Array.from(row.cells).map(cell => cell.textContent.trim()),
-                    visible: true
-                };
-            });
-            currentData = [...originalData];
-        }
-
-        function setupSearch() {
-            const searchInput = document.getElementById('searchInput');
-            let searchTimeout;
-
-            // Убираем зум на iOS при фокусе
-            searchInput.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                this.focus();
-            }, { passive: false });
-
-            searchInput.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    performSearch(this.value);
-                }, 200);
-            });
-
-            // Добавляем обработку для мобильных клавиатур
-            searchInput.addEventListener('keyup', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    performSearch(this.value);
-                }, 200);
-            });
-        }
-
-        function setupFilters() {
-            const filtersRow = document.getElementById('filtersRow');
-            const headers = Array.from(document.querySelectorAll('#dataTable th'));
-            
-            headers.forEach((header, index) => {
-                const columnName = header.textContent.trim().replace(/\s+/g, ' ').split(' ')[0];
-                
-                if (filterData[columnName] && filterData[columnName].length > 1) {
-                    const filterGroup = document.createElement('div');
-                    filterGroup.className = 'filter-group';
-                    
-                    const label = document.createElement('div');
-                    label.className = 'filter-label';
-                    label.textContent = columnName.length > 10 ? columnName.substring(0, 10) + '...' : columnName;
-                    
-                    const select = document.createElement('select');
-                    select.className = 'filter-select';
-                    select.setAttribute('data-column', columnName);
-                    
-                    // Улучшенная обработка для мобильных
-                    select.addEventListener('touchstart', function(e) {
-                        e.stopPropagation();
-                    });
-                    
-                    const defaultOption = document.createElement('option');
-                    defaultOption.value = '';
-                    defaultOption.textContent = 'Все';
-                    select.appendChild(defaultOption);
-                    
-                    filterData[columnName].forEach(value => {
-                        const option = document.createElement('option');
-                        option.value = value;
-                        option.textContent = value.length > 15 ? value.substring(0, 15) + '...' : value;
-                        option.title = value;
-                        select.appendChild(option);
-                    });
-                    
-                    select.addEventListener('change', function() {
-                        updateFilter(columnName, this.value);
-                    });
-
-                    // Дополнительный обработчик для мобильных
-                    select.addEventListener('touchend', function() {
-                        setTimeout(() => {
-                            updateFilter(columnName, this.value);
-                        }, 100);
-                    });
-                    
-                    filterGroup.appendChild(label);
-                    filterGroup.appendChild(select);
-                    filtersRow.insertBefore(filterGroup, filtersRow.lastElementChild);
-                }
-            });
-        }
-
-        function updateFilter(columnName, value) {
-            if (value === '') {
-                delete activeFilters[columnName];
-            } else {
-                activeFilters[columnName] = value;
-            }
-            applyFilters();
-        }
-
-        function clearAllFilters() {
-            activeFilters = {};
-            document.querySelectorAll('.filter-select').forEach(select => {
-                select.value = '';
-            });
-            document.getElementById('searchInput').value = '';
-            applyFilters();
-        }
-
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const tableBody = document.getElementById('tableBody');
-            const noResults = document.getElementById('noResults');
-            let visibleCount = 0;
-
-            originalData.forEach(rowData => {
-                let showRow = true;
-                
-                // Применяем поисковый фильтр
-                if (searchTerm) {
-                    const rowText = rowData.data.join(' ').toLowerCase();
-                    if (!rowText.includes(searchTerm)) {
-                        showRow = false;
-                    }
-                }
-                
-                // Применяем фильтры столбцов
-                Object.keys(activeFilters).forEach(columnName => {
-                    const columnIndex = Array.from(document.querySelectorAll('#dataTable th')).findIndex(th => 
-                        th.textContent.trim().split(' ')[0] === columnName
-                    );
-                    
-                    if (columnIndex !== -1 && rowData.data[columnIndex] !== activeFilters[columnName]) {
-                        showRow = false;
-                    }
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('mouseover', function() {
+                    this.style.backgroundColor = '#f0f8ff';
                 });
-                
-                if (showRow) {
-                    rowData.element.style.display = '';
-                    visibleCount++;
-                } else {
-                    rowData.element.style.display = 'none';
-                }
+                row.addEventListener('mouseout', function() {
+                    this.style.backgroundColor = '';
+                });
             });
-
-            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-            document.getElementById('filteredRows').textContent = visibleCount;
-        }
-
-        function performSearch(searchTerm) {
-            applyFilters();
-        }
-
-        function sortTable(columnName) {
-            const table = document.getElementById('dataTable');
-            const tbody = table.querySelector('tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr')).filter(row => row.style.display !== 'none');
-            const headers = Array.from(table.querySelectorAll('th'));
-            const columnIndex = headers.findIndex(th => th.textContent.trim().includes(columnName));
-
-            if (columnIndex === -1) return;
-
-            const isAscending = !sortDirection[columnName];
-            sortDirection[columnName] = isAscending;
-
-            // Обновляем иконки сортировки
-            headers.forEach((th, index) => {
-                const icon = th.querySelector('.sort-icon');
-                if (index === columnIndex) {
-                    icon.className = isAscending ? 'fas fa-sort-up sort-icon active' : 'fas fa-sort-down sort-icon active';
-                } else {
-                    icon.className = 'fas fa-sort sort-icon';
-                }
-            });
-
-            rows.sort((a, b) => {
-                const aText = a.cells[columnIndex].textContent.trim();
-                const bText = b.cells[columnIndex].textContent.trim();
-                
-                // Попытка сравнить как числа
-                const aNum = parseFloat(aText);
-                const bNum = parseFloat(bText);
-                
-                if (!isNaN(aNum) && !isNaN(bNum)) {
-                    return isAscending ? aNum - bNum : bNum - aNum;
-                }
-                
-                // Сравнение как строки
-                const comparison = aText.localeCompare(bText, 'ru');
-                return isAscending ? comparison : -comparison;
-            });
-
-            // Перестраиваем таблицу
-            rows.forEach(row => tbody.appendChild(row));
-        }
-
-        function updateStats() {
-            const totalRows = document.querySelectorAll('#tableBody tr').length;
-            document.getElementById('totalRows').textContent = totalRows;
-            document.getElementById('filteredRows').textContent = totalRows;
-        }
-
-        // Адаптивное поведение для мобильных устройств
-        function handleMobileView() {
-            const isMobile = window.innerWidth <= 768;
-            const table = document.querySelector('.modern-table');
-            const tableContainer = document.querySelector('.table-container');
-            
-            if (isMobile) {
-                // На мобильных убираем min-width и даем таблице заполнить весь контейнер
-                table.style.minWidth = 'auto';
-                table.style.width = '100%';
-                tableContainer.style.overflowX = 'auto';
-            } else {
-                table.style.minWidth = 'auto';
-                table.style.width = '100%';
-            }
-        }
-
-        window.addEventListener('resize', handleMobileView);
-
-        // Улучшенная обработка тач-событий для мобильных
-        let touchStartX = 0;
-        let touchStartY = 0;
-
-        // Предотвращаем зум при двойном тапе на элементах управления
-        document.addEventListener('touchstart', function(e) {
-            if (e.target.closest('.search-input') || e.target.closest('.filter-select')) {
-                e.target.style.fontSize = '16px';
-            }
-        });
-
-        // Улучшенная прокрутка таблицы на мобильных
-        const tableContainer = document.querySelector('.table-container');
-        if (tableContainer) {
-            tableContainer.addEventListener('touchstart', function(e) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            });
-
-            tableContainer.addEventListener('touchmove', function(e) {
-                const touchX = e.touches[0].clientX;
-                const touchY = e.touches[0].clientY;
-                const deltaX = Math.abs(touchX - touchStartX);
-                const deltaY = Math.abs(touchY - touchStartY);
-                
-                // Если горизонтальное движение больше вертикального, разрешаем прокрутку таблицы
-                if (deltaX > deltaY && deltaX > 10) {
-                    e.stopPropagation();
-                }
-            });
-        }
-
-        // Эффекты при скролле
-        let scrollTimeout;
-        document.querySelector('.table-container').addEventListener('scroll', function() {
-            const header = document.querySelector('.header');
-            clearTimeout(scrollTimeout);
-            
-            if (this.scrollTop > 50) {
-                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
-            } else {
-                header.style.boxShadow = 'none';
-            }
-            
-            scrollTimeout = setTimeout(() => {
-                header.style.boxShadow = 'none';
-            }, 1000);
         });
     </script>
 </body>
